@@ -1,0 +1,3 @@
+from sator_core.use_cases.extraction.attributes.patch import PatchAttributesExtraction
+from sator_core.use_cases.extraction.attributes.product import ProductAttributesExtraction
+from sator_core.use_cases.extraction.attributes.vulnerability import VulnerabilityAttributesExtraction

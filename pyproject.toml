@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project.urls]
+repository = "https://github.com/epicosy/sator-core"
+homepage = "https://github.com/epicosy/sator-core"
+
+[project]
+name="sator-core"
+version = "0.0.1"
+description = "Package with the core domain logic for Sator, an open-source vulnerability analysis application."
+readme = "README.md"
+authors = [
+    {name = "Eduard Pinconschi", email="eduard.pinconschi@tecnico.ulisboa.pt"}
+]
+keywords = ["package", "sator", "core", "hexagonal", "architecture"]
+license = {file = "LICENSE.txt"}
+requires-python = ">=3.10"
+classifiers = [
+    "Topic :: Software Development",
+    "Programming Language :: Python",
+    "Environment :: Console",
+    "Intended Audience :: Developers"
+]
+dependencies = [
+    "pydantic>=2.10.3"
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-cov",
+    "coverage",
+    "twine>=1.11.0",
+    "setuptools>=38.6.0",
+    "wheel>=0.31.0"
+]
+
+
+[tool.setuptools.packages.find]
+exclude = ["ez_setup", "tests*"]

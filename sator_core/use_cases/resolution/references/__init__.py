@@ -1,0 +1,3 @@
+from sator_core.use_cases.resolution.references.patch import PatchReferencesResolution
+from sator_core.use_cases.resolution.references.product import ProductReferencesResolution
+from sator_core.use_cases.resolution.references.vulnerability import VulnerabilityReferencesResolution
