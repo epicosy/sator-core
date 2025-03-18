@@ -1,9 +1,9 @@
-from sator.core.models.product.attributes import ProductAttributes
-from sator.core.models.product.descriptor import ProductDescriptor
+from sator_core.models.product.attributes import ProductAttributes
+from sator_core.models.product.descriptor import ProductDescriptor
 
-from sator.core.ports.driven.classifiers.product import ProductClassifierPort
-from sator.core.ports.driven.persistence.storage import StoragePersistencePort
-from sator.core.ports.driving.annotation.attributes.product import ProductAttributesAnnotationPort
+from sator_core.ports.driven.classifiers.product import ProductClassifierPort
+from sator_core.ports.driven.persistence.storage import StoragePersistencePort
+from sator_core.ports.driving.annotation.attributes.product import ProductAttributesAnnotationPort
 
 
 class ProductAttributesAnnotation(ProductAttributesAnnotationPort):

@@ -1,11 +1,11 @@
-from sator.core.models.patch.attributes import PatchAttributes
-from sator.core.models.patch.descriptor import PatchDescriptor
+from sator_core.models.patch.attributes import PatchAttributes
+from sator_core.models.patch.descriptor import PatchDescriptor
 
-from sator.core.ports.driven.classifiers.diff import DiffClassifierPort
-from sator.core.ports.driven.persistence.storage import StoragePersistencePort
-from sator.core.ports.driven.classifiers.weakness import WeaknessClassifierPort
-from sator.core.ports.driven.classifiers.patch_action import PatchActionClassifierPort
-from sator.core.ports.driving.annotation.attributes.patch import PatchAttributesAnnotationPort
+from sator_core.ports.driven.classifiers.diff import DiffClassifierPort
+from sator_core.ports.driven.persistence.storage import StoragePersistencePort
+from sator_core.ports.driven.classifiers.weakness import WeaknessClassifierPort
+from sator_core.ports.driven.classifiers.patch_action import PatchActionClassifierPort
+from sator_core.ports.driving.annotation.attributes.patch import PatchAttributesAnnotationPort
 
 
 class PatchAttributesAnnotation(PatchAttributesAnnotationPort):

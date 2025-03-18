@@ -9,7 +9,7 @@ from sator_core.models.vulnerability.locator import VulnerabilityLocator
 
 from sator_core.ports.driven.gateways.oss import OSSGatewayPort
 from sator_core.ports.driven.persistence.storage import StoragePersistencePort
-from sator.core.ports.driving.resolution.references.patch import PatchReferencesResolutionPort
+from sator_core.ports.driving.resolution.references.patch import PatchReferencesResolutionPort
 
 
 class PatchReferencesResolution(PatchReferencesResolutionPort):

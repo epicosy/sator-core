@@ -3,8 +3,8 @@ from sator_core.models.patch.references import PatchReferences
 
 from sator_core.ports.driven.gateways.oss import OSSGatewayPort
 from sator_core.ports.driven.persistence.storage import StoragePersistencePort
-from sator.core.ports.driven.extraction.attributes.patch import PatchAttributesExtractorPort
-from sator.core.ports.driving.extraction.attributes.patch import PatchAttributesExtractionPort
+from sator_core.ports.driven.extraction.attributes.patch import PatchAttributesExtractorPort
+from sator_core.ports.driving.extraction.attributes.patch import PatchAttributesExtractionPort
 
 
 class PatchAttributesExtraction(PatchAttributesExtractionPort):

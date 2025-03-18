@@ -1,8 +1,8 @@
-from sator.core.models.patch import PatchLocator, PatchAttributes, PatchDescriptor
+from sator_core.models.patch import PatchLocator, PatchAttributes, PatchDescriptor
 
-from sator.core.ports.driven.persistence.storage import StoragePersistencePort
-from sator.core.ports.driven.analyzers.patch import PatchAttributesAnalyzerPort
-from sator.core.ports.driving.analysis.attributes.patch import PatchAttributesAnalysisPort
+from sator_core.ports.driven.persistence.storage import StoragePersistencePort
+from sator_core.ports.driven.analyzers.patch import PatchAttributesAnalyzerPort
+from sator_core.ports.driving.analysis.attributes.patch import PatchAttributesAnalysisPort
 
 
 class PatchAttributesAnalysis(PatchAttributesAnalysisPort):

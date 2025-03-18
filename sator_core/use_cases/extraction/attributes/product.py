@@ -1,8 +1,8 @@
 from sator_core.models.vulnerability.locator import VulnerabilityLocator
 from sator_core.models.product import ProductAttributes, ProductReferences
 
-from sator.core.ports.driven.persistence.storage import StoragePersistencePort
-from sator.core.ports.driving.extraction.attributes.product import ProductAttributesExtractionPort
+from sator_core.ports.driven.persistence.storage import StoragePersistencePort
+from sator_core.ports.driving.extraction.attributes.product import ProductAttributesExtractionPort
 
 
 class ProductAttributesExtraction(ProductAttributesExtractionPort):

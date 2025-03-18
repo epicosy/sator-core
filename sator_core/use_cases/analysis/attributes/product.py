@@ -1,12 +1,12 @@
-from sator.core.models.product.attributes import ProductAttributes
-from sator.core.models.product.references import ProductReferences
+from sator_core.models.product.attributes import ProductAttributes
+from sator_core.models.product.references import ProductReferences
 
-from sator.core.models.product import Product
-from sator.core.models.product.locator import ProductOwnership, ProductLocator
+from sator_core.models.product import Product
+from sator_core.models.product.locator import ProductOwnership, ProductLocator
 
-from sator.core.ports.driven.gateways.oss import OSSGatewayPort
-from sator.core.ports.driven.persistence.storage import StoragePersistencePort
-from sator.core.ports.driving.analysis.attributes.product import ProductAttributesAnalysisPort
+from sator_core.ports.driven.gateways.oss import OSSGatewayPort
+from sator_core.ports.driven.persistence.storage import StoragePersistencePort
+from sator_core.ports.driving.analysis.attributes.product import ProductAttributesAnalysisPort
 
 
 class ProductAttributesAnalysis(ProductAttributesAnalysisPort):
