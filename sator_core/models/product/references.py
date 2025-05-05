@@ -10,12 +10,11 @@ class ProductReferences(BaseModel):
     other: Optional[List[AnyUrl]] = Field(default_factory=list)
 
     def extend(self, references: "ProductReferences"):
-        # TODO: check for duplicates
-        self.website.extend(references.website)
-        self.product.extend(references.product)
-        self.releases.extend(references.releases)
-        self.advisories.extend(references.advisories)
-        self.other.extend(references.other)
+        self.website = list(set(self.website + references.website))
+        self.product = list(set(self.product + references.product))
+        self.releases = list(set(self.releases + references.releases))
+        self.advisories = list(set(self.advisories + references.advisories))
+        self.other = list(set(self.other + references.other))
 
     def to_list(self) -> List[AnyUrl]:
         return self.website + self.product + self.releases + self.advisories + self.other
