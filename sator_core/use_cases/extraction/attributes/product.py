@@ -20,7 +20,7 @@ class ProductAttributesExtraction(ProductAttributesExtractionPort):
         product_references = self.storage_port.load(ProductReferences, product.id)
 
         if product_references:
-            product_attributes = self.extractor_port.extract_product_attributes(product_references)
+            product_attributes = self.extractor_port.extract_product_attributes(product, product_references)
 
             if product_attributes:
                 self.storage_port.save(product_attributes, product.id)
