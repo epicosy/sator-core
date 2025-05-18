@@ -26,7 +26,9 @@ class ProductReferencesResolution(ProductReferencesResolutionPort):
         return product_references
 
     def _get_product_references(self, product: Product) -> ProductReferences | None:
-        product_references = ProductReferences()
+        product_references = ProductReferences(
+            product_id=product.id,
+        )
 
         for port in self.product_repositories:
             references = port.get_product_references(product)

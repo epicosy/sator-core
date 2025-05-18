@@ -20,12 +20,12 @@ class ProductAttributesAnnotation(ProductAttributesAnnotationPort):
         product_attributes = self.storage_port.load(ProductAttributes, product_id)
 
         if product_attributes:
-            product_part = self.product_classifier.classify_product_part(product_attributes.product)
-            product_type = self.product_classifier.classify_product_type(product_attributes.product.name, product_part)
-            license_type = self.product_classifier.classify_license_type(product_attributes.product)
+            product_part = self.product_classifier.classify_product_part(product_attributes)
+            product_type = self.product_classifier.classify_product_type(product_attributes, product_part)
+            license_type = self.product_classifier.classify_license_type(product_attributes)
 
             product_descriptor = ProductDescriptor(
-                product=product_attributes.product,
+                product_id=product_id,
                 type=product_type,
                 part=product_part,
                 license_type=license_type

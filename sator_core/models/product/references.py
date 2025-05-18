@@ -3,21 +3,20 @@ from pydantic import BaseModel, Field, AnyUrl
 
 
 class ProductReferences(BaseModel):
-    website: Optional[List[AnyUrl]] = Field(default_factory=list)
-    product: Optional[List[AnyUrl]] = Field(default_factory=list)
-    releases: Optional[List[AnyUrl]] = Field(default_factory=list)
-    advisories: Optional[List[AnyUrl]] = Field(default_factory=list)
+    product_id: str
+    homepage: Optional[List[AnyUrl]] = Field(default_factory=list)
+    repositories: Optional[List[AnyUrl]] = Field(default_factory=list)
+    purls: Optional[List[AnyUrl]] = Field(default_factory=list)
     other: Optional[List[AnyUrl]] = Field(default_factory=list)
 
     def extend(self, references: "ProductReferences"):
-        self.website = list(set(self.website + references.website))
-        self.product = list(set(self.product + references.product))
-        self.releases = list(set(self.releases + references.releases))
-        self.advisories = list(set(self.advisories + references.advisories))
+        self.homepage = list(set(self.homepage + references.homepage))
+        self.purls = list(set(self.purls + references.purls))
+        self.repositories = list(set(self.repositories + references.repositories))
         self.other = list(set(self.other + references.other))
 
     def to_list(self) -> List[AnyUrl]:
-        return self.website + self.product + self.releases + self.advisories + self.other
+        return self.homepage + self.purls + self.repositories + self.other
 
     def __iter__(self) -> Iterator[AnyUrl]:
         return iter(self.to_list())
@@ -27,10 +26,9 @@ class ProductReferences(BaseModel):
 
     def __str__(self):
         ref_categories = [
-            ("website", self.website),
-            ("product", self.product),
-            ("releases", self.releases),
-            ("advisories", self.advisories),
+            ("homepage", self.homepage),
+            ("repositories", self.repositories),
+            ("purls", self.purls),
             ("other", self.other)
         ]
 

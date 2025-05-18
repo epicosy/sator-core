@@ -16,14 +16,15 @@ test_product = Product(
 )
 
 test_product_attributes = ProductAttributes(
-    product=test_product,
+    name="Document Server",
+    product_id=test_product.id,
     keywords=["online office suite", "collaborative editing"],
     platforms=["Mac", "Windows", "Linux"]
 )
 
 
 test_product_descriptor = ProductDescriptor(
-    product=test_product,
+    product_id=test_product.id,
     type=ProductType.SERVER,
     part=ProductPart.APPLICATION,
     license_type=LicenseType.OPEN_SOURCE

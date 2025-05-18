@@ -6,20 +6,21 @@ from sator_core.models.product import Product, ProductAttributes, ProductReferen
 from sator_core.use_cases.extraction.attributes import ProductAttributesExtraction
 
 
-test_prod_references = ProductReferences(
-    website=[AnyUrl("https://example.com")],
-    product=[AnyUrl("https://example.com/product")],
-    releases=[AnyUrl("https://example.com/releases")],
-    advisories=[AnyUrl("https://example.com/advisories")]
-)
-
 test_product = Product(
     vendor="vendor",
     name="product",
 )
 
+test_prod_references = ProductReferences(
+    product_id=test_product.id,
+    homepage=[AnyUrl("https://example.com")],
+    repositories=[AnyUrl("https://example.com/repository")],
+    other=[AnyUrl("https://example.com/releases")]
+)
+
 test_product_attributes = ProductAttributes(
-    product=test_product,
+    name="product",
+    product_id=test_product.id,
     keywords=["keyword1", "keyword2"],
     platforms=["linux", "macos", "windows"],
 )

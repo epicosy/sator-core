@@ -15,8 +15,10 @@ test_product = Product(
 )
 
 test_product_references = ProductReferences(
-    website=[AnyUrl("https://onlyoffice.com")],
-    product=[AnyUrl("https://github.com/ONLYOFFICE/DocumentServer")]
+    product_id=test_product.id,
+    homepage=[AnyUrl("https://onlyoffice.com")],
+    repositories=[AnyUrl("https://github.com/ONLYOFFICE/DocumentServer")],
+    purls=[AnyUrl("pkg:github/onlyoffice/documentserver")],
 )
 
 
@@ -45,10 +47,13 @@ class TestProductReferencesResolution(unittest.TestCase):
     def test_fetches_and_saves_new_references(self):
         """Test fetches references from repositories when not cached"""
         mock_refs1 = ProductReferences(
-            website=test_product_references.website
+            product_id=test_product.id,
+            homepage=test_product_references.homepage,
+            purls=test_product_references.purls
         )
         mock_refs2 = ProductReferences(
-            product=test_product_references.product
+            product_id=test_product.id,
+            repositories=test_product_references.repositories
         )
 
         self.mock_storage.load.return_value = None
@@ -65,8 +70,12 @@ class TestProductReferencesResolution(unittest.TestCase):
     def test_returns_none_when_no_references_found(self):
         """Test returns None when no repositories have references"""
         self.mock_storage.load.return_value = None
-        self.mock_repo1.get_product_references.return_value = ProductReferences()
-        self.mock_repo2.get_product_references.return_value = ProductReferences()
+        self.mock_repo1.get_product_references.return_value = ProductReferences(
+            product_id="empty/product",
+        )
+        self.mock_repo2.get_product_references.return_value = ProductReferences(
+            product_id="empty/product",
+        )
 
         result = self.resolution.search_product_references("empty", "product")
 
@@ -76,9 +85,12 @@ class TestProductReferencesResolution(unittest.TestCase):
     def test_handles_partial_repository_results(self):
         """Test combines results from repositories with partial responses"""
         mock_refs1 = ProductReferences(
-            website=test_product_references.website
+            product_id="partial/results",
+            homepage=test_product_references.homepage,
         )
-        mock_refs2 = ProductReferences()
+        mock_refs2 = ProductReferences(
+            product_id="partial/results"
+        )
 
         self.mock_storage.load.return_value = None
         self.mock_repo1.get_product_references.return_value = mock_refs1

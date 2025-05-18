@@ -2,10 +2,28 @@ from datetime import datetime
 from typing import Tuple, List
 from abc import ABC, abstractmethod
 
+from pydantic.v1 import AnyUrl
+
 from sator_core.models.oss.diff import Diff
+from sator_core.models.product import ProductLocator, ProductAttributes
 
 
 class OSSGatewayPort(ABC):
+    @abstractmethod
+    def get_product_locator_from_urls(
+            self, product_id: str, urls: List[AnyUrl], product_attributes: ProductAttributes
+    ) -> ProductLocator | None:
+        """
+            Given a list of URLs, package URLs, and product attributes, determine which repository the product is in.
+
+            :param product_id: The product id.
+            :param urls: The repository URLs.
+            :param product_attributes: The product attributes.
+
+            :return: The product locator.
+        """
+        raise NotImplementedError
+
     @abstractmethod
     def get_diff(self, repo_id: int, commit_sha: str) -> Diff | None:
         raise NotImplementedError
