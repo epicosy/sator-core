@@ -32,6 +32,8 @@ class ProductReferencesResolution(ProductReferencesResolutionPort):
 
         for port in self.product_repositories:
             references = port.get_product_references(product)
-            product_references.extend(references)
+
+            if references:
+                product_references.extend(references)
 
         return product_references if len(product_references) > 0 else None

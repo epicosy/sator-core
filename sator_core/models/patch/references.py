@@ -3,6 +3,7 @@ from pydantic import BaseModel, Field, AnyUrl
 
 
 class PatchReferences(BaseModel):
+    vulnerability_id: str
     diffs: Optional[List[AnyUrl]] = Field(default_factory=list)
     messages: Optional[List[AnyUrl]] = Field(default_factory=list)
     other: Optional[List[AnyUrl]] = Field(default_factory=list)
