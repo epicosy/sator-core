@@ -22,15 +22,17 @@ class PatchAttributesExtraction(PatchAttributesExtractionPort):
 
         patch_references = self.storage_port.load(PatchReferences, vulnerability_id)
 
-        if patch_references.diffs:
+        if patch_references:
             for diff in patch_references.diffs:
                 owner_id, repo_id, diff_id = self.oss_gateway.get_ids_from_url(str(diff))
 
-                diff = self.oss_gateway.get_diff(repo_id, diff_id)
-                diff_message = self.oss_gateway.get_diff_message(repo_id, diff_id)
-                patch_attributes = self.attributes_extractor.extract_patch_attributes(diff_message, diff)
+                if diff_id is None:
+                    continue
 
-                # TODO: add functionality for when there are multiple diffs, to decide which patch attributes to pick
+                diff = self.oss_gateway.get_diff(repo_id, diff_id)
+                patch_attributes = self.attributes_extractor.extract_patch_attributes(diff)
+
+                # TODO: decide if the patch attributes correspond/correlate with the vulnerability
 
                 if patch_attributes:
                     self.storage_port.save(patch_attributes, vulnerability_id)

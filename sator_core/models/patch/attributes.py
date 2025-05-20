@@ -6,6 +6,7 @@ from sator_core.models.oss.diff import Diff
 
 
 class PatchAttributes(BaseModel):
+    vulnerability_id: str
     action: Optional[str] = None
     flaw: Optional[str] = None
     version: Optional[str] = None

@@ -1,9 +1,6 @@
 from typing import List
-from pydantic import AnyUrl
 
 from sator_core.models.patch.references import PatchReferences
-from sator_core.models.vulnerability.metadata import VulnerabilityMetadata
-from sator_core.models.vulnerability.references import VulnerabilityReferences
 
 from sator_core.models.product.locator import ProductLocator
 from sator_core.models.vulnerability.locator import VulnerabilityLocator

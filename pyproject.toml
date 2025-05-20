@@ -8,7 +8,7 @@ homepage = "https://github.com/epicosy/sator-core"
 
 [project]
 name="sator-core"
-version = "0.0.10"
+version = "0.0.11"
 description = "Package with the core domain logic for Sator, an open-source vulnerability analysis application."
 readme = "README.md"
 authors = [
