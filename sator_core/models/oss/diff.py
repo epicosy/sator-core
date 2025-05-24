@@ -59,7 +59,7 @@ class Patch(BaseModel):
 class Diff(BaseModel):
     repository_id: int
     message: str
-    data: datetime
+    date: datetime
     commit_sha: str
     parent_commit_sha: str
     patches: List[Patch]
@@ -68,7 +68,7 @@ class Diff(BaseModel):
         return iter(self.patches)
 
     def __str__(self):
-        _str = f"Commit: {self.commit_sha} | Parent: {self.parent_commit_sha} | Message: {self.message}"
+        _str = f"Commit: {self.commit_sha} | Parent: {self.parent_commit_sha} | Message: {self.message} | Date: {self.date}"
 
         for patch in self.patches:
             _str += f"\n\t{patch}"
