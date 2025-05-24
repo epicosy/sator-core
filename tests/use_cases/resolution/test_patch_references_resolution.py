@@ -45,12 +45,13 @@ test_patch_references = PatchReferences(
 class TestPatchReferencesResolution(unittest.TestCase):
     def setUp(self):
         self.mock_storage = MagicMock(spec=StoragePersistencePort)
-        self.mock_oss_gateway = MagicMock(spec=OSSGatewayPort)
+        self.mock_oss_gateway1 = MagicMock(spec=OSSGatewayPort)
+        self.mock_oss_gateway2 = MagicMock(spec=OSSGatewayPort)
         self.mock_repo1 = MagicMock(spec=OSSRepositoryPort)
         self.mock_repo2 = MagicMock(spec=OSSRepositoryPort)
         self.resolution = PatchReferencesResolution(
             oss_repositories=[self.mock_repo1, self.mock_repo2],
-            oss_gateway=self.mock_oss_gateway,
+            oss_gateways=[self.mock_oss_gateway1, self.mock_oss_gateway2],
             storage_port=self.mock_storage
         )
 
@@ -58,7 +59,7 @@ class TestPatchReferencesResolution(unittest.TestCase):
         """Test returns cached references from storage"""
         self.mock_storage.load.return_value = test_patch_references
 
-        result = self.resolution.search_patch_references(test_vulnerability_id)
+        result = self.resolution.search_patch_references(test_vulnerability_id, test_product.id)
 
         self.assertEqual(result, test_patch_references)
         self.mock_storage.load.assert_called_once_with(PatchReferences, test_vulnerability_id)
@@ -84,7 +85,7 @@ class TestPatchReferencesResolution(unittest.TestCase):
         self.mock_repo1.get_references.return_value = mock_refs1
         self.mock_repo2.get_references.return_value = mock_refs2
 
-        result = self.resolution.search_patch_references(test_vulnerability_id)
+        result = self.resolution.search_patch_references(test_vulnerability_id, test_product.id)
 
         self.assertEqual(result, test_patch_references)
         self.mock_storage.save.assert_called_once_with(test_patch_references, test_vulnerability_id)
@@ -111,8 +112,10 @@ class TestPatchReferencesResolution(unittest.TestCase):
         self.mock_storage.load.side_effect = [None, test_vulnerability_locator, test_product_locator]
         self.mock_repo1.get_references.return_value = empty_refs
         self.mock_repo2.get_references.return_value = empty_refs
+        self.mock_oss_gateway1.search_patch_references.return_value = None
+        self.mock_oss_gateway2.search_patch_references.return_value = None
 
-        result = self.resolution.search_patch_references(test_vulnerability_id)
+        result = self.resolution.search_patch_references(test_vulnerability_id, test_product.id)
 
         self.assertIsNone(result)
         self.mock_storage.save.assert_not_called()
@@ -133,34 +136,95 @@ class TestPatchReferencesResolution(unittest.TestCase):
         self.mock_storage.load.side_effect = [None, test_vulnerability_locator, test_product_locator]
         self.mock_repo1.get_references.return_value = mock_refs1
         self.mock_repo2.get_references.return_value = mock_refs2
+        # No need to call OSS gateways since repositories return references
 
-        result = self.resolution.search_patch_references(test_vulnerability_id)
+        result = self.resolution.search_patch_references(test_vulnerability_id, test_product.id)
 
         self.assertEqual(result, mock_refs1)
         self.mock_storage.save.assert_called_once_with(result, test_vulnerability_id)
 
     def test_handles_missing_locators(self):
         """Test handles case when vulnerability or product locators are missing"""
-        mock_refs = PatchReferences(
+        # First load returns None for patch references
+        # Second load returns None for vulnerability locator
+        # Third load returns None for product locator (not used in this test since we return early)
+        self.mock_storage.load.side_effect = [None, None, None]
+
+        result = self.resolution.search_patch_references(test_vulnerability_id, test_product.id)
+
+        # In the new implementation, if locators can't be found, the method returns None
+        self.assertIsNone(result)
+        self.mock_storage.save.assert_not_called()
+        self.mock_repo1.get_references.assert_not_called()
+        self.mock_repo2.get_references.assert_not_called()
+        self.mock_oss_gateway1.search_patch_references.assert_not_called()
+        self.mock_oss_gateway2.search_patch_references.assert_not_called()
+
+    def test_uses_gateways_when_repositories_return_none(self):
+        """Test uses OSS gateways when repositories return no references"""
+        empty_refs = PatchReferences(
+            vulnerability_id=test_vulnerability_id
+        )
+
+        gateway_refs1 = PatchReferences(
             vulnerability_id=test_vulnerability_id,
             diffs=test_patch_references.diffs
         )
 
+        gateway_refs2 = PatchReferences(
+            vulnerability_id=test_vulnerability_id,
+            messages=test_patch_references.messages,
+            other=test_patch_references.other
+        )
+
         # First load returns None for patch references
-        # Second load returns None for vulnerability locator
-        self.mock_storage.load.side_effect = [None, None]
-        self.mock_repo1.get_references.return_value = mock_refs
-        self.mock_repo2.get_references.return_value = None
+        # Second load returns vulnerability locator
+        # Third load returns product locator
+        self.mock_storage.load.side_effect = [None, test_vulnerability_locator, test_product_locator]
 
-        result = self.resolution.search_patch_references(test_vulnerability_id)
+        # Repositories return empty references
+        self.mock_repo1.get_references.return_value = empty_refs
+        self.mock_repo2.get_references.return_value = empty_refs
 
-        self.assertEqual(result, mock_refs)
-        self.mock_storage.save.assert_called_once_with(result, test_vulnerability_id)
-        # Should call with None for both locators
+        # Gateways return references
+        self.mock_oss_gateway1.search_patch_references.return_value = gateway_refs1
+        self.mock_oss_gateway2.search_patch_references.return_value = gateway_refs2
+
+        result = self.resolution.search_patch_references(test_vulnerability_id, test_product.id)
+
+        # Result should be the combined references from both gateways
+        expected_result = PatchReferences(
+            vulnerability_id=test_vulnerability_id,
+            diffs=test_patch_references.diffs,
+            messages=test_patch_references.messages,
+            other=test_patch_references.other
+        )
+
+        self.assertEqual(result, expected_result)
+        self.mock_storage.save.assert_called_once_with(expected_result, test_vulnerability_id)
+
+        # Verify repositories were called
         self.mock_repo1.get_references.assert_called_once_with(
             test_vulnerability_id,
-            vulnerability_locator=None,
-            product_locator=None
+            vulnerability_locator=test_vulnerability_locator,
+            product_locator=test_product_locator
+        )
+        self.mock_repo2.get_references.assert_called_once_with(
+            test_vulnerability_id,
+            vulnerability_locator=test_vulnerability_locator,
+            product_locator=test_product_locator
+        )
+
+        # Verify gateways were called
+        self.mock_oss_gateway1.search_patch_references.assert_called_once_with(
+            test_vulnerability_id,
+            vulnerability_locator=test_vulnerability_locator,
+            product_locator=test_product_locator
+        )
+        self.mock_oss_gateway2.search_patch_references.assert_called_once_with(
+            test_vulnerability_id,
+            vulnerability_locator=test_vulnerability_locator,
+            product_locator=test_product_locator
         )
 
 
