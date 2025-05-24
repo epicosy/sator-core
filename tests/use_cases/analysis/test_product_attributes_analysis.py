@@ -41,7 +41,7 @@ class TestProductAttributesAnalysis(unittest.TestCase):
         self.mock_oss_gateway = MagicMock(spec=OSSGatewayPort)
         self.mock_storage = MagicMock(spec=StoragePersistencePort)
         self.analysis = ProductAttributesAnalysis(
-            oss_gateway=self.mock_oss_gateway,
+            oss_gateways=[self.mock_oss_gateway],
             storage_port=self.mock_storage
         )
 

@@ -58,7 +58,7 @@ class TestPatchAttributesExtraction(unittest.TestCase):
         self.mock_storage = MagicMock()
         self.extractor = PatchAttributesExtraction(
             attributes_extractor=self.mock_attributes_extractor,
-            oss_gateway=self.mock_oss_gateway,
+            oss_gateways=[self.mock_oss_gateway],
             storage_port=self.mock_storage
         )
 
