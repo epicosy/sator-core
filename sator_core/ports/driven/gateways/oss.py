@@ -57,6 +57,30 @@ class OSSGatewayPort(ABC):
         raise NotImplementedError
 
     @abstractmethod
+    def get_ids_from_repo_path(self, platform: str, repo_path: str) -> Tuple[Union[int, None], Union[int, None]]:
+        """
+            Parse the repository path and return the owner and repository ids.
+
+            :param platform: The platform of the repository (e.g., "GitHub").
+            :param repo_path: The repository path to parse.
+
+            :return: A tuple containing the owner id and repository id.
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def get_repo_submodules(self, platform: str, repo_path: str) -> List[str]:
+        """
+            Get the submodules of a repository.
+
+            :param platform: The platform of the repository (e.g., "GitHub").
+            :param repo_path: The repository path.
+
+            :return: A list of submodule paths.
+        """
+        raise NotImplementedError
+
+    @abstractmethod
     def search(self, repo_id: int, start_date: datetime, end_date: datetime, n: int) -> List[str]:
         """
             Search for a commit in a repository.
