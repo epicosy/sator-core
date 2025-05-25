@@ -34,6 +34,9 @@ class PatchAttributesAnnotation(PatchAttributesAnnotationPort):
             action_type = self.patch_action_classifier.classify_patch_action(patch_attributes.action)
             diff_descriptor = self.diff_classifier.classify_diff(patch_attributes.diff)
 
+            if not diff_descriptor:
+                return None
+
             patch_descriptor = PatchDescriptor(
                 action_type=action_type, weakness_type=weakness_type, diff_descriptor=diff_descriptor
             )

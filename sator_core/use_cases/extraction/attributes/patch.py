@@ -33,7 +33,7 @@ class PatchAttributesExtraction(PatchAttributesExtractionPort):
                         continue
 
                     diff = oss_gateway.get_diff(repo_id, diff_id)
-                    patch_attributes = self.attributes_extractor.extract_patch_attributes(diff)
+                    patch_attributes = self.attributes_extractor.extract_patch_attributes(vulnerability_id, diff)
 
                     # TODO: decide if the patch attributes correspond/correlate with the vulnerability
 

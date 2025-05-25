@@ -92,7 +92,7 @@ class TestPatchAttributesExtraction(unittest.TestCase):
         self.mock_storage.save.assert_called_once_with(test_patch_attributes, test_vulnerability_id)
         self.mock_oss_gateway.get_ids_from_url.assert_called_once()
         self.mock_oss_gateway.get_diff.assert_called_once_with(123, "abc123")
-        self.mock_attributes_extractor.extract_patch_attributes.assert_called_once_with(test_diff)
+        self.mock_attributes_extractor.extract_patch_attributes.assert_called_once_with(test_vulnerability_id, test_diff)
 
     def test_returns_none_when_no_valid_diff_id(self):
         # Setup: Storage returns references but no diff_id can be extracted
