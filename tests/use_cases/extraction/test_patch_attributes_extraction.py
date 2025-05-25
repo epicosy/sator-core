@@ -73,7 +73,7 @@ class TestPatchAttributesExtraction(unittest.TestCase):
         self.mock_storage.load.side_effect = [test_patch_attributes]
 
         # Execute
-        result = self.extractor.extract_patch_attributes(test_vulnerability_id)
+        result = self.extractor.extract_patch_attributes(test_vulnerability_id, test_product_locator.product_id)
 
         # Assert
         self.assertEqual(result, test_patch_attributes)
@@ -91,7 +91,7 @@ class TestPatchAttributesExtraction(unittest.TestCase):
         self.mock_oss_gateway.get_repo_submodules.return_value = []
 
         # Execute
-        result = self.extractor.extract_patch_attributes(test_vulnerability_id)
+        result = self.extractor.extract_patch_attributes(test_vulnerability_id, test_product_locator.product_id)
 
         # Assert
         self.assertEqual(result, test_patch_attributes)
@@ -111,7 +111,7 @@ class TestPatchAttributesExtraction(unittest.TestCase):
         self.mock_oss_gateway.get_repo_submodules.return_value = []
 
         # Execute
-        result = self.extractor.extract_patch_attributes(test_vulnerability_id)
+        result = self.extractor.extract_patch_attributes(test_vulnerability_id, test_product_locator.product_id)
 
         # Assert
         self.assertIsNone(result)
@@ -128,7 +128,7 @@ class TestPatchAttributesExtraction(unittest.TestCase):
         self.mock_oss_gateway.get_repo_submodules.return_value = []
 
         # Execute
-        result = self.extractor.extract_patch_attributes(test_vulnerability_id)
+        result = self.extractor.extract_patch_attributes(test_vulnerability_id, test_product_locator.product_id)
 
         # Assert
         self.assertIsNone(result)
@@ -139,7 +139,7 @@ class TestPatchAttributesExtraction(unittest.TestCase):
         self.mock_storage.load.return_value = None
 
         # Execute
-        result = self.extractor.extract_patch_attributes(test_vulnerability_id)
+        result = self.extractor.extract_patch_attributes(test_vulnerability_id, test_product_locator.product_id)
 
         # Assert
         self.assertIsNone(result)
@@ -151,7 +151,7 @@ class TestPatchAttributesExtraction(unittest.TestCase):
         self.mock_storage.load.side_effect = [None, test_patch_references, None]
 
         # Execute
-        result = self.extractor.extract_patch_attributes(test_vulnerability_id)
+        result = self.extractor.extract_patch_attributes(test_vulnerability_id, test_product_locator.product_id)
 
         # Assert
         self.assertIsNone(result)
@@ -172,7 +172,7 @@ class TestPatchAttributesExtraction(unittest.TestCase):
         self.mock_attributes_extractor.extract_patch_attributes.return_value = test_patch_attributes
 
         # Execute
-        result = self.extractor.extract_patch_attributes(test_vulnerability_id)
+        result = self.extractor.extract_patch_attributes(test_vulnerability_id, test_product_locator.product_id)
 
         self.mock_oss_gateway.get_ids_from_repo_path.assert_any_call(
             platform=test_product_locator.platform, repo_path=test_product_locator.repository_path
@@ -198,7 +198,7 @@ class TestPatchAttributesExtraction(unittest.TestCase):
         self.mock_oss_gateway.get_repo_submodules.return_value = []  # No submodules
 
         # Execute
-        result = self.extractor.extract_patch_attributes(test_vulnerability_id)
+        result = self.extractor.extract_patch_attributes(test_vulnerability_id, test_product_locator.product_id)
 
         # Assert
         self.assertIsNone(result)

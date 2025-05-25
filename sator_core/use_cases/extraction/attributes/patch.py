@@ -21,12 +21,13 @@ class PatchAttributesExtraction(PatchAttributesExtractionPort):
         self.storage_port = storage_port
         self.attributes_extractor = attributes_extractor
 
-    def extract_patch_attributes(self, vulnerability_id: str) -> Optional[PatchAttributes]:
+    def extract_patch_attributes(self, vulnerability_id: str, product_id: str) -> Optional[PatchAttributes]:
         """
         Extract patch attributes for a given vulnerability ID.
 
         Args:
             vulnerability_id: The ID of the vulnerability.
+            product_id: The ID of the product.
 
         Returns:
             PatchAttributes if found or extracted successfully, None otherwise.
@@ -43,7 +44,7 @@ class PatchAttributesExtraction(PatchAttributesExtractionPort):
             return None
 
         # Load product locator
-        product_locator = self._load_product_locator(vulnerability_id)
+        product_locator = self._load_product_locator(product_id)
 
         if not product_locator:
             return None
@@ -62,17 +63,17 @@ class PatchAttributesExtraction(PatchAttributesExtractionPort):
         """
         return self.storage_port.load(PatchAttributes, vulnerability_id)
 
-    def _load_product_locator(self, vulnerability_id: str) -> Optional[ProductLocator]:
+    def _load_product_locator(self, product_id: str) -> Optional[ProductLocator]:
         """
         Load product locator from storage.
 
         Args:
-            vulnerability_id: The ID of the vulnerability.
+            product_id: The ID of the product.
 
         Returns:
             ProductLocator if found in storage, None otherwise.
         """
-        return self.storage_port.load(ProductLocator, vulnerability_id)
+        return self.storage_port.load(ProductLocator, product_id)
 
     def _load_patch_references(self, vulnerability_id: str) -> Optional[PatchReferences]:
         """
